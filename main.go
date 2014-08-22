@@ -2,10 +2,14 @@ package main
 
 import (
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/orm"
 	"github.com/chanxuehong/wechat/message/request"
 	"github.com/chanxuehong/wechat/message/response"
 	"github.com/chanxuehong/wechat/server"
 	"net/http"
+	"wechat/g"
+	_ "wechat/models"
+	_ "wechat/routers"
 )
 
 const (
@@ -16,6 +20,7 @@ const (
 var wechatHandler *server.Handler
 
 func main() {
+	g.InitEnv()
 	// 初始化 wechatHandler
 	setting := &server.HandlerSetting{
 		Token:              TOKEN,
@@ -25,6 +30,8 @@ func main() {
 
 	beego.Handler("/wechat", wechatHandler)
 	beego.Run()
+	orm.RunCommand()
+	orm.Debug = true
 }
 
 // 自定义文本消息处理函数
