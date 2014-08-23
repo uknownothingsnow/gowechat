@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"wechat/g"
 	_ "wechat/models"
+	"wechat/models/message"
 	_ "wechat/routers"
 )
 
@@ -36,10 +37,11 @@ func main() {
 
 // 自定义文本消息处理函数
 func TextRequestHandler(w http.ResponseWriter, r *http.Request, text *request.Text) {
-	//TODO: 添加你的代码，下面只是示例代码！
-	// 把用户发送过来的文本原样的回复过去
-	resp := response.NewText(text.FromUserName, text.ToUserName, text.Content)
+	if msg := message.GetByText(text.Content); msg != nil {
+		// 把用户发送过来的文本原样的回复过去
+		resp := response.NewText(text.FromUserName, text.ToUserName, msg.Text)
 
-	w.Header().Set("Content-Type", "application/xml; charset=utf-8") // 可选
-	server.WriteText(w, resp)
+		w.Header().Set("Content-Type", "application/xml; charset=utf-8") // 可选
+		server.WriteText(w, resp)
+	}
 }

@@ -20,6 +20,23 @@ func GetById(id int64) *TextMessageTemplate {
 	return &o
 }
 
+func GetByText(text string) *TextMessageTemplate {
+	var msg TextMessageTemplate
+	err := Texts().Filter("text", text).One(&msg)
+	if err == orm.ErrMultiRows {
+		// 多条的时候报错
+		fmt.Printf("Returned Multi Rows Not One")
+		return nil
+	}
+	if err == orm.ErrNoRows {
+		// 没有找到记录
+		fmt.Printf("Not row found")
+		return nil
+	}
+
+	return &msg
+}
+
 func Update(t *TextMessageTemplate, text string) error {
 	if t.Id == 0 {
 		return fmt.Errorf("primary key:id not set")
