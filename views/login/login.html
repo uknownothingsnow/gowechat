@@ -29,7 +29,7 @@
 
             $.post("{{urlfor "LoginController.DoLogin"}}", {"name":name, "password": CryptoJS.MD5(password) + ''}, function(data){
                 if (data.length == 0) {
-                    window.location.href="/";
+                    window.location.href="/admin";
                 } else {
                     $("#err .header").html(data);
                     $("#err").show("fast");

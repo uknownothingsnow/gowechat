@@ -6,6 +6,13 @@ import (
 
 func init() {
 	
+	beego.GlobalControllerRouter["wechat/controllers:AdminController"] = append(beego.GlobalControllerRouter["wechat/controllers:AdminController"],
+		beego.ControllerComments{
+			"Get",
+			"/",
+			[]string{"get"},
+			nil})
+
 	beego.GlobalControllerRouter["wechat/controllers:MessageController"] = append(beego.GlobalControllerRouter["wechat/controllers:MessageController"],
 		beego.ControllerComments{
 			"Get",
